@@ -1,19 +1,26 @@
 import React from 'react';
 
-import Toast from '../Toast';
+import Toast, { ICONS_BY_VARIANT } from '../Toast';
+import { ToastContext } from '../ToastProvider';
 import styles from './ToastShelf.module.css';
 
 function ToastShelf() {
+  const { toasts, dismiss } = React.useContext(ToastContext);
+
   return (
-    <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
-      </li>
-      <li className={styles.toastWrapper}>
-        <Toast variant="error">Example error toast</Toast>
-      </li>
+    <ol className={styles.wrapper} role="region" aria-live="polite" aria-label="Notification">
+      {toasts.map(({ id, variant, message }) => (
+        <li key={id} className={styles.toastWrapper}>
+          <Toast
+            message={message}
+            variant={variant}
+            icon={ICONS_BY_VARIANT[variant]}
+            dismiss={() => dismiss(id)}
+          />
+        </li>
+      ))}
     </ol>
   );
 }
 
-export default ToastShelf;
+export default React.memo(ToastShelf);

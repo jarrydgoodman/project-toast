@@ -11,25 +11,25 @@ import VisuallyHidden from '../VisuallyHidden';
 
 import styles from './Toast.module.css';
 
-const ICONS_BY_VARIANT = {
+export const ICONS_BY_VARIANT = {
   notice: Info,
   warning: AlertTriangle,
   success: CheckCircle,
   error: AlertOctagon,
 };
 
-function Toast() {
+function Toast({ variant, message, icon: Icon, dismiss }) {
   return (
-    <div className={`${styles.toast} ${styles.notice}`}>
+    <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
-        <Info size={24} />
+        <Icon size={24} />
       </div>
       <p className={styles.content}>
-        16 photos have been uploaded
+        <VisuallyHidden>{variant} -{' '}</VisuallyHidden>
+        {message}
       </p>
-      <button className={styles.closeButton}>
+      <button className={styles.closeButton} onClick={dismiss} aria-label="Dismiss message" aria-live="off">
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
